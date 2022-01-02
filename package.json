@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "firebase": "^9.6.1"
+    "@angular/typescript": "^2.0.0-5d0e199",
+    "axios": "^0.24.0"
   }
 }

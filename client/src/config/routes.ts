@@ -5,14 +5,31 @@ import LoginPage from "../pages/auth/login";
 import LogoutPage from "../pages/auth/logout";
 import RegisterPage from "../pages/auth/register";
 import ResetPasswordPage from "../pages/auth/reset";
-import HomePage from "../pages/home";
+import NavBar from "../pages/NavBar";
+import AllSports from "../pages/HomePage";
+import SportCard from "../components/Card";
+
 
 const routes: IRoute[] = [
     {
+        path: '/o',
+        exact: true,
+        component: NavBar,
+        name: 'NavBar',
+        protected: true
+    },
+    {
+        path: '/oo',
+        exact: true,
+        component: SportCard,
+        name: 'SportCard',
+        protected: true
+    },
+    {
         path: '/',
         exact: true,
-        component: HomePage,
-        name: 'Home Page',
+        component: AllSports,
+        name: 'AllSports',
         protected: true
     },
     {
