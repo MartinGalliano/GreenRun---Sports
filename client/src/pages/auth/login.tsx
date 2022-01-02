@@ -52,7 +52,7 @@ const LoginPage: React.FunctionComponent<IPageProps> = props => {
     }
 
     return (
-        <AuthContainer header="Login">
+        <AuthContainer header="Welcome">
             <FormGroup>
                 <Input 
                     type="email"
