@@ -2,8 +2,16 @@ import { FC, useState, useEffect } from 'react'
 import axios, { AxiosResponse } from "axios";
 import NavBar from '../components/NavBar';
 import Sports  from '../interfaces/api';
-import styled from 'styled-components';
+import styled, { ThemeProvider, DefaultTheme } from 'styled-components';
 import TarjetaPersona from 'react-tinder-card';
+import AppButtoms from '../components/appbuttoms';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import { IconButton } from '@material-ui/core';
+
+import usePeristedState from '../utils/usePersistedState'; 
+import light from '../styles/themes/light';
+import dark from '../styles/themes/dark'; 
+import GlobalStyle from '../styles/global';
 
 const AllSports: FC<Sports> = () => {
     const [sports, setSports] = useState<Array<Sports>>([]);
@@ -16,9 +24,10 @@ const AllSports: FC<Sports> = () => {
           id: element.idSport,
           name: element.strSport,
         image: element.strSportThumb,
-        description: element.strSportDescription,
+        description: element.strSportDescription, 
         format: element.strFormat, 
         nide: element.strSportIconGreen
+    //some things I don't use but I bring them in case I want to use them in the future 
       })
         });
         setSports(ISports);
@@ -27,7 +36,51 @@ const AllSports: FC<Sports> = () => {
         console.log(error);
       });
     }, []);
+    
+  
+ const [theme, setTheme] = usePeristedState<DefaultTheme>('theme', light);
 
+  const toggleTheme = () => {
+    setTheme(theme.title === 'light' ? dark : light);
+  }; 
+
+
+ return (
+  <ThemeProvider theme={theme}> 
+    <GlobalStyle />
+   <NavBar name = {""} IconsButtings= {""} toggleTheme={toggleTheme} />
+      <CardContainer> 
+       {sports.length>0 && sports.map((item:Sports,index:number) => (
+         <Swipe
+           key={item.name}
+           preventSwipe={['up', 'down']}
+         >
+           <Card
+           style={{backgroundImage: `url(${item.image})`}}
+           >
+            <IconContext>
+            <ButtomFavorite fontSize='large'/>
+           </IconContext>
+             <CardText>
+               <h2> 
+               {item.name},
+               </h2>
+             <h4> 
+               {item.format}
+             </h4>
+             </CardText>
+           </Card>
+         </Swipe>
+       ))} 
+          </CardContainer>
+          <AppButtoms name = {""} IconsButtings= {""} toggleTheme={toggleTheme} /> 
+        </ThemeProvider>
+ )
+}
+export default AllSports
+
+
+// -------------------------------  styled Time =) -------------------------------------------------
 
 const CardContainer = styled.div`
     display: flex;
@@ -53,36 +106,19 @@ position: absolute;
     bottom: 10px;
     color: white;
 `
+const IconContext = styled(IconButton)`
+  display: flex;
+    width: 90%;
+    right: -50vh;
+    position: fixed;
+padding: 10px;
+justify-content: space-evenly;
 
- return (
-    <> 
-   <NavBar name = {""} botonRetroceder= {""} />
-      <CardContainer> 
-
-       {sports.length>0 && sports.map((item:Sports,index:number) => (
-         <Swipe
-           key={item.name}
-           preventSwipe={['up', 'down']}
-         >
-           <Card
-           style={{backgroundImage: `url(${item.image})`}}
-           >
-             <CardText>
-               <h2> 
-               {item.name},
-               </h2>
-             <h4> 
-               {item.format}
-             </h4>
-             </CardText>
-           </Card>
-         </Swipe>
-       ))} 
-          </CardContainer>
-    </>
-       
- )
-}
-export default AllSports
+`
 
 
+const ButtomFavorite = styled(FavoriteIcon)`
+transform: scale(2.0);
+ 
+
+`

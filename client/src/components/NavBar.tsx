@@ -1,7 +1,7 @@
-import React from 'react';
+import React,{ useContext }  from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import IPageProps from '../interfaces/page';
-import styled from 'styled-components';
+import styled,{ ThemeContext }  from 'styled-components';
 import GreenRunLogo from '../Imgs/GreenRunLogo.png';
 
 import IconButton from '@material-ui/core/IconButton';
@@ -9,12 +9,48 @@ import PersonIcon from '@mui/icons-material/Person';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 
+
+ const NavBar : React.FunctionComponent<IPageProps> = ({IconsButtings,toggleTheme}) => {
+  const history = useHistory();
+  return (
+        <>
+            <NavContainer>
+           {IconsButtings ? (
+               <IconButton onClick={() => history.replace(IconsButtings)} >
+                    <ArrowBackIosIcon fontSize="large" />
+               </IconButton>
+               ) : (
+                <IconButton
+                onClick={toggleTheme}>
+            
+                    <BrightnessIcon fontSize="large"/>
+                </IconButton>
+           )}
+            
+                <Img src={GreenRunLogo} alt="" />
+
+            <Link to="/profile">
+                <IconButton>
+                    <PersonIconstyled fontSize="large"/>
+                </IconButton>
+            </Link>
+            </NavContainer>
+        </>
+    );
+}
+ 
+export default NavBar; 
+
+
+
+//------------------------ Styled Time  =) ------------------------------
+
 const NavContainer = styled.div`
- display: flex;
+    display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #fbfbfb;
-   padding: 15px;
+    padding: 15px;
+    background: ${props => props.theme.colors.primary};
 `
 const Img = styled.img`
  height: 70px;
@@ -42,62 +78,3 @@ padding: 10px;
     box-shadow: 3px 3px 3px  #2dabff;
 }
 `
-
-
-
- const NavBar : React.FunctionComponent<IPageProps> = ({botonRetroceder}) => {
-  const history = useHistory();
-  return (
-        <>
-            <NavContainer>
-          {/*   {botonRetroceder  ? (
-               <IconButton onClick={() => history.replace(botonRetroceder)} >
-                     <RedLightbulbFill fontSize="large"/>
-                </IconButton>
-            ) : (
-
-              <IconButton>
-              <RedLightbulbFill  fontSize="large"/>
-          </IconButton>
-     )}
-
-                {< Img src={GreenRunLogo} alt="" />}
-                    
-                     {/* 
-                        <Link to='/logout'>o</Link>
-                 
-                        <Link to="/change">here</Link> */}  
-   {/*              
-                 <IconButton > 
-                <RedLightbulbFill fontSize="large"/>
-                </IconButton>  */}
-              
-           {botonRetroceder ? (
-               <IconButton onClick={() => history.replace(botonRetroceder)} >
-                    <ArrowBackIosIcon fontSize="large" />
-               </IconButton>
-           
-               ) : (
-
-                <Link to="/chats">
-                <IconButton>
-                    <BrightnessIcon fontSize="large"/>
-                </IconButton>
-            </Link>
-            
-           )}
-            
-                <Img src={GreenRunLogo} alt="" />
-
-            <Link to="/profile">
-                <IconButton>
-                    <PersonIconstyled fontSize="large"/>
-                </IconButton>
-            </Link>
-            </NavContainer>
-        </>
-    );
-}
- 
-export default NavBar; 
-

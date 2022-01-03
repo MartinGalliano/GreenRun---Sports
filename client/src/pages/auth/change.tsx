@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Redirect, useHistory } from 'react-router-dom';
+import {Link,Redirect, useHistory } from 'react-router-dom';
 import { Button, FormGroup, Input } from 'reactstrap';
 import AuthContainer from '../../components/AuthContainer';
 import ErrorText from '../../components/ErrorText';
 import { auth } from '../../config/firebase';
 import logging from '../../config/logging';
 import IPageProps from '../../interfaces/page';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 
 const ChangePasswordPage: React.FunctionComponent<IPageProps> = props => {
     const [changing, setChanging] = useState<boolean>(false);
@@ -86,6 +87,15 @@ const ChangePasswordPage: React.FunctionComponent<IPageProps> = props => {
                 Change Password
             </Button>
             <ErrorText error={error} />
+            <hr className="bg-info m-3" />
+<Link to= "/profile">
+<Button
+    block
+    style={{ backgroundColor:'#ea4335', borderColor: '#ea4335'}} 
+>
+Back <ManageAccountsIcon/> 
+</Button>
+    </Link>
         </AuthContainer>
     );
 }

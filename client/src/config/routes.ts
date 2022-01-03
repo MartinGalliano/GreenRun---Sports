@@ -7,6 +7,8 @@ import RegisterPage from "../pages/auth/register";
 import ResetPasswordPage from "../pages/auth/reset";
 import NavBar from "../components/NavBar";
 import AllSports from "../pages/HomePage";
+import AppButtoms from "../components/appbuttoms";
+import ProfilePage from "../pages/Profile";
 
 
 
@@ -18,6 +20,12 @@ const routes: IRoute[] = [
         component: NavBar,
         name: 'NavBar',
         protected: true
+    }, {
+        path: '/oo',
+        exact: true,
+        component:  AppButtoms,
+        name: ' AppButtoms',
+        protected: true
     },
     {
         path: '/',
@@ -25,6 +33,13 @@ const routes: IRoute[] = [
         component: AllSports,
         name: 'AllSports',
         protected: true
+    },
+    {
+        path: '/profile',
+        exact: true,
+        component: ProfilePage,
+        name: 'ProfilePage',
+        protected: false
     },
     {
         path: '/register',

@@ -7,6 +7,13 @@ import { auth } from '../../config/firebase';
 import logging from '../../config/logging';
 import IPageProps from '../../interfaces/page';
 
+import GlobalStyle from '../../styles/global';
+import NavBar from '../../components/NavBar';
+import { ThemeProvider, DefaultTheme } from 'styled-components';
+import usePeristedState from '../../utils/usePersistedState'
+import light from '../../styles/themes/light';
+import dark from '../../styles/themes/dark'; 
+
 const RegisterPage: React.FunctionComponent<IPageProps> = props => {
     const [registering, setRegistering] = useState<boolean>(false);
     const [email, setEmail] = useState<string>('');
@@ -51,8 +58,19 @@ const RegisterPage: React.FunctionComponent<IPageProps> = props => {
             setRegistering(false);
         });
     }
+    
+    const [theme, setTheme] = usePeristedState<DefaultTheme>('theme', light);
+
+    const toggleTheme = () => {
+      setTheme(theme.title === 'light' ? dark : light);
+    };
 
     return (
+        
+        <ThemeProvider theme={theme}> 
+        <GlobalStyle />
+        <NavBar name = {""} IconsButtings= {""} toggleTheme={toggleTheme} />
+
         <AuthContainer header="Register">
             <FormGroup>
                 <Input 
@@ -99,6 +117,7 @@ const RegisterPage: React.FunctionComponent<IPageProps> = props => {
             </small>
             <ErrorText error={error} />
         </AuthContainer>
+        </ThemeProvider>
     );
 }
 

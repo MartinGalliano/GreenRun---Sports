@@ -9,6 +9,13 @@ import IPageProps from '../../interfaces/page';
 import firebase from 'firebase';
 import { SignInWithSocialMedia } from './modules';
 
+import GlobalStyle from '../../styles/global';
+import NavBar from '../../components/NavBar';
+import { ThemeProvider, DefaultTheme } from 'styled-components';
+import usePeristedState from '../../utils/usePersistedState'
+import light from '../../styles/themes/light';
+import dark from '../../styles/themes/dark'; 
+
 const LoginPage: React.FunctionComponent<IPageProps> = props => {
     const [authenticating, setAuthenticating] = useState<boolean>(false);
     const [email, setEmail] = useState<string>('');
@@ -51,7 +58,17 @@ const LoginPage: React.FunctionComponent<IPageProps> = props => {
         });
     }
 
+    const [theme, setTheme] = usePeristedState<DefaultTheme>('theme', light);
+
+    const toggleTheme = () => {
+      setTheme(theme.title === 'light' ? dark : light);
+    };
+
     return (
+        <ThemeProvider theme={theme}> 
+        <GlobalStyle />
+        <NavBar name = {""} IconsButtings= {""} toggleTheme={toggleTheme} />
+        
         <AuthContainer header="Welcome">
             <FormGroup>
                 <Input 
@@ -61,7 +78,7 @@ const LoginPage: React.FunctionComponent<IPageProps> = props => {
                     placeholder="Email Address"
                     onChange={event => setEmail(event.target.value)}
                     value={email}
-                />
+                    />
             </FormGroup>
             <FormGroup>
                 <Input 
@@ -72,18 +89,18 @@ const LoginPage: React.FunctionComponent<IPageProps> = props => {
                     placeholder="Enter Password"
                     onChange={event => setPassword(event.target.value)}
                     value={password}
-                />
+                    />
             </FormGroup>
             <Button
                 disabled={authenticating}
                 color="success"
                 block
                 onClick={() => signInWithEmailAndPassword()}
-            >
+                >
                 Login
             </Button>
             <small>
-                <p className='m-1 text-center'>Don't have an account? <Link to="/register">Register here.</Link></p>
+                <p className='m-1 text-center'><Link to="/register">Register here.</Link></p>
                 <p className='m-1 text-center'><Link to="/forget">Forget your password?</Link></p>
             </small>
             <ErrorText error={error} />
@@ -93,10 +110,11 @@ const LoginPage: React.FunctionComponent<IPageProps> = props => {
                 disabled={authenticating}
                 onClick={() => signInWithSocialMedia(Providers.google)}
                 style={{ backgroundColor:'#ea4335', borderColor: '#ea4335'}} 
-            >
+                >
                 <i className="fab fa-google mr-2"></i> Sign in with Google
             </Button>
         </AuthContainer>
+        </ThemeProvider>
     );
 }
 
